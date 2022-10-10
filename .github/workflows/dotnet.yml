@@ -1,0 +1,45 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/WeatherForecast
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Setup Node 12
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Build
+      run: dotnet build --no-restore
+    
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      
+    - name: Install Railway
+      run: npm i -g @railway/cli
+
+    - name: Deploy
+      run: railway up
+      working-directory: src/WeatherForecast/WeatherForecast.Api
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
