@@ -1,4 +1,4 @@
-name: .NET
+name: .NET Build, test & deploy to Railway.app
 
 on:
   push:
@@ -21,11 +21,6 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-        
-    - name: Setup Node 16
-      uses: actions/setup-node@v1
-      with:
-        node-version: 16.x
     
     - name: Restore dependencies
       run: dotnet restore
@@ -35,6 +30,11 @@ jobs:
     
     - name: Test
       run: dotnet test --no-build --verbosity normal
+      
+    - name: Setup Node 16
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.x
       
     - name: Install Railway
       run: npm i -g @railway/cli
