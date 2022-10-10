@@ -32,6 +32,7 @@ jobs:
 
   Test:
     runs-on: ubuntu-latest
+    environment: Test
     needs: [CI]
     defaults:
       run:
@@ -52,10 +53,11 @@ jobs:
       run: railway up
       working-directory: src/WeatherForecast/WeatherForecast.Api
       env:
-        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_TEST }}
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         
   Production:
     runs-on: ubuntu-latest
+    environment: Production
     needs: [Test]
     defaults:
       run:
