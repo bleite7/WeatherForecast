@@ -7,7 +7,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build_test_deploy:
+    name: Build, test & deploy to Railway.app
     runs-on: ubuntu-latest
     defaults:
       run:
