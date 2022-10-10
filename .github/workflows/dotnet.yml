@@ -21,10 +21,10 @@ jobs:
       with:
         dotnet-version: 6.0.x
         
-    - name: Setup Node 12
+    - name: Setup Node 16
       uses: actions/setup-node@v1
       with:
-        node-version: 12.x
+        node-version: 16.x
     
     - name: Restore dependencies
       run: dotnet restore
