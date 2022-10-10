@@ -7,8 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build_test_deploy:
-    name: Build, test & deploy to Railway.app
+  CI:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -30,7 +29,41 @@ jobs:
     
     - name: Test
       run: dotnet test --no-build --verbosity normal
+
+  Test:
+    runs-on: ubuntu-latest
+    needs: [CI]
+    defaults:
+      run:
+        working-directory: src/WeatherForecast/WeatherForecast.Api
+        
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node 16
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.x
       
+    - name: Install Railway
+      run: npm i -g @railway/cli
+
+    - name: Deploy
+      run: railway up
+      working-directory: src/WeatherForecast/WeatherForecast.Api
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_TEST }}
+        
+  Production:
+    runs-on: ubuntu-latest
+    needs: [Test]
+    defaults:
+      run:
+        working-directory: src/WeatherForecast/WeatherForecast.Api
+        
+    steps:
+    - uses: actions/checkout@v3
+    
     - name: Setup Node 16
       uses: actions/setup-node@v1
       with:
@@ -44,3 +77,4 @@ jobs:
       working-directory: src/WeatherForecast/WeatherForecast.Api
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
