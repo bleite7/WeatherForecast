@@ -1,4 +1,4 @@
-namespace WeatherForecast.Api.Models;
+namespace WeatherForecast.Api.v1.Models;
 public class WeatherForecast
 {
     public DateTime Date { get; set; }

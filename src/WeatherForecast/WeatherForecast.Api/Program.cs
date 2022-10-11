@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc;
+
 namespace WeatherForecast.Api;
 public class Program
 {
@@ -7,6 +9,17 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddHealthChecks();
+        builder.Services.AddApiVersioning(options =>
+        {
+            options.ReportApiVersions = true;
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+            options.AssumeDefaultVersionWhenUnspecified = true;
+        });
+        builder.Services.AddVersionedApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'VVV";
+            options.SubstituteApiVersionInUrl = true;
+        });
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
