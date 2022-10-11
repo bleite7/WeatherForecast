@@ -37,6 +37,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        args: >
+          -Dsonar.organization=bleite7
+          -Dsonar.projectKey=WeatherForecast
 
   Test:
     runs-on: ubuntu-latest
@@ -62,7 +66,7 @@ jobs:
       working-directory: src/WeatherForecast/WeatherForecast.Api
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        
+
   Production:
     runs-on: ubuntu-latest
     environment: Production
