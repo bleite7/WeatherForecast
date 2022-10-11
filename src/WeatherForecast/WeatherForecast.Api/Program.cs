@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WeatherForecast.Api;
 public class Program
 {
-    static void Main(string[] args)
+    protected static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
