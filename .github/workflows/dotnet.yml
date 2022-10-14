@@ -2,63 +2,63 @@ name: .NET Build, test & deploy to Railway.app
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   CI:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     defaults:
       run:
         working-directory: src/WeatherForecast
 
     steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
-        
-    - name: Cache SonarCloud packages
-      uses: actions/cache@v1
-      with:
-        path: ~\sonar\cache
-        key: ${{ runner.os }}-sonar
-        restore-keys: ${{ runner.os }}-sonar
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
-    - name: Cache SonarCloud scanner
-      uses: actions/cache@v1
-      with:
-        path: .\.sonar\scanner
-        key: ${{ runner.os }}-sonar-scanner
-        restore-keys: ${{ runner.os }}-sonar-scanner
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
 
-    - name: Install SonarCloud scanner
-      if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-      run: dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
-    
-    - name: Restore dependencies
-      run: dotnet restore
-    
-    - name: Build
-      run: dotnet build --no-restore
-    
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-    
-    - name: Analyze
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: |
-        ./.sonar/scanner/dotnet-sonarscanner begin /k:"WeatherForecast" /o:"bleite7" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-        dotnet build
-        dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover -l trx
-        ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache SonarCloud scanner
+        uses: actions/cache@v1
+        with:
+          path: .\.sonar\scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+
+      - name: Install SonarCloud scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        run: dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
+
+      - name: Analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"WeatherForecast" /o:"bleite7" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet build
+          dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover -l trx
+          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
   Test:
     runs-on: ubuntu-latest
@@ -67,23 +67,23 @@ jobs:
     defaults:
       run:
         working-directory: src/WeatherForecast/WeatherForecast.Api
-        
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup Node 16
-      uses: actions/setup-node@v1
-      with:
-        node-version: 16.x
-      
-    - name: Install Railway
-      run: npm i -g @railway/cli
 
-    - name: Deploy
-      run: railway up
-      working-directory: src/WeatherForecast/WeatherForecast.Api
-      env:
-        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node 16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+
+      - name: Install Railway
+        run: npm i -g @railway/cli
+
+      - name: Deploy
+        run: railway up
+        working-directory: src/WeatherForecast/WeatherForecast.Api
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
   Production:
     runs-on: ubuntu-latest
@@ -92,21 +92,20 @@ jobs:
     defaults:
       run:
         working-directory: src/WeatherForecast/WeatherForecast.Api
-        
+
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup Node 16
-      uses: actions/setup-node@v1
-      with:
-        node-version: 16.x
-      
-    - name: Install Railway
-      run: npm i -g @railway/cli
+      - uses: actions/checkout@v3
 
-    - name: Deploy
-      run: railway up
-      working-directory: src/WeatherForecast/WeatherForecast.Api
-      env:
-        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      - name: Setup Node 16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
 
+      - name: Install Railway
+        run: npm i -g @railway/cli
+
+      - name: Deploy
+        run: railway up
+        working-directory: src/WeatherForecast/WeatherForecast.Api
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
