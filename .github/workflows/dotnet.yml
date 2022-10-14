@@ -62,7 +62,7 @@ jobs:
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
   Test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     environment: Test
     needs: [CI]
     defaults:
@@ -87,7 +87,7 @@ jobs:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
   Production:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     environment: Production
     needs: [Test]
     defaults:
