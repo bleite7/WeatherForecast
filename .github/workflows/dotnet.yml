@@ -31,6 +31,7 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
 
       - name: Cache SonarCloud scanner
+        id: cache-sonar-scanner
         uses: actions/cache@v1
         with:
           path: .\.sonar\scanner
