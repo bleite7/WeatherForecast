@@ -1,5 +1,6 @@
 # WeatherForecast
 [![.NET Build, test & deploy to Railway.app](https://github.com/bleite7/WeatherForecast/actions/workflows/dotnet.yml/badge.svg?branch=main)](https://github.com/bleite7/WeatherForecast/actions/workflows/dotnet.yml)
+
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=WeatherForecast&metric=coverage)](https://sonarcloud.io/summary/new_code?id=WeatherForecast)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=WeatherForecast&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=WeatherForecast)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=WeatherForecast&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=WeatherForecast)
