@@ -8,7 +8,6 @@ namespace WeatherForecast.Api.v1.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 public class WeatherForecastController : ControllerBase
 {
-    private readonly ILogger<WeatherForecastController> _logger;
     private static readonly string[] Summaries = new[] {
         "Freezing",
         "Bracing",
@@ -21,11 +20,6 @@ public class WeatherForecastController : ControllerBase
         "Sweltering",
         "Scorching"
     };
-
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
-    {
-        _logger = logger;
-    }
 
     [HttpGet]
     public ActionResult<Models.WeatherForecast[]?> Get()

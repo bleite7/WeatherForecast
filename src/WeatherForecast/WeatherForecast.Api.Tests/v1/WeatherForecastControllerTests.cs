@@ -9,8 +9,7 @@ public class WeatherForecastControllerTests
     public void Get_ReturnsForecastArrayOf5Items()
     {
         // Arrange
-        var loggerStub = new Mock<ILogger<WeatherForecastController>>();
-        var controller = new WeatherForecastController(loggerStub.Object);
+        WeatherForecastController controller = new();
 
         // Act
         var result = controller.Get();
