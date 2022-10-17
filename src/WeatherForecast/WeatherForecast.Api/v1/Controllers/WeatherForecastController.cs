@@ -30,26 +30,11 @@ public class WeatherForecastController : ControllerBase
     [HttpGet]
     public ActionResult<Models.WeatherForecast[]?> Get()
     {
-        try
+        return Enumerable.Range(1, 5).Select(index => new Models.WeatherForecast
         {
-            return Enumerable.Range(1, 5).Select(index => new Models.WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            }).ToArray();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error getting weather forecast data.");
-            var problemDetails = new ProblemDetails
-            {
-                Status = StatusCodes.Status400BadRequest,
-                Title = ex.Message,
-                Detail = ex.StackTrace,
-                Instance = HttpContext.Request.Path
-            };
-            return BadRequest(problemDetails);
-        }
+            Date = DateTime.Now.AddDays(index),
+            TemperatureC = Random.Shared.Next(-20, 55),
+            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+        }).ToArray();
     }
 }
