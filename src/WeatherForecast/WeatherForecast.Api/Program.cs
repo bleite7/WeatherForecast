@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WeatherForecast.Api;
+
+[ExcludeFromCodeCoverage]
 static class Program
 {
     static void Main(string[] args)

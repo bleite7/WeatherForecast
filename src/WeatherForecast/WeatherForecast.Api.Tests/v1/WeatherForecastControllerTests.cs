@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System.Reflection;
 using WeatherForecast.Api.v1.Controllers;
 
 namespace WeatherForecast.Api.Tests;
@@ -18,7 +16,7 @@ public class WeatherForecastControllerTests
         var result = controller.Get();
 
         // Assert
-        Assert.IsType<v1.Models.WeatherForecast[]?>(result.Value);
+        Assert.IsType<v1.Models.WeatherForecast[]?>(result?.Value);
         var forecastArray = result?.Value;
         Assert.Equal(5, forecastArray?.Length);
     }
